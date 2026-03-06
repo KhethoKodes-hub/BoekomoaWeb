@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Boemokao · About Us</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink:    #05090f;
+      --deep:   #0a1628;
+      --mid:    #163256;
+      --blue:   #1e5aaa;
+      --azure:  #2e7dd4;
+      --sky:    #6db3f5;
+      --ice:    #d6eaff;
+      --frost:  #eef5ff;
+      --white:  #ffffff;
+      --chrome: #e8ecf2;
+      --silver: #b0bcc8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--frost);
+      color: var(--ink);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CURSOR ─── */
+    #cursor {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--azure); position: fixed; pointer-events: none;
+      z-index: 9999; transform: translate(-50%,-50%);
+      transition: width .18s, height .18s, background .18s;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid var(--azure); position: fixed; pointer-events: none;
+      z-index: 9998; transform: translate(-50%,-50%);
+      transition: width .4s, height .4s, border-color .3s; opacity: .55;
+    }
+    body:has(a:hover) #cursor { width: 18px; height: 18px; background: var(--sky); }
+    body:has(a:hover) #cursor-ring { width: 54px; height: 54px; border-color: var(--sky); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 68px;
+      background: rgba(5,9,15,.82);
+      backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1px solid rgba(46,125,212,.18);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem;
+      color: var(--white); letter-spacing: -.04em; text-decoration: none;
+    }
+    .nav-logo span { color: var(--sky); }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      font-size: .85rem; font-weight: 500; color: var(--silver);
+      text-decoration: none; letter-spacing: .04em; text-transform: uppercase;
+      position: relative; transition: color .2s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1.5px; background: var(--sky); transition: width .3s ease;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { color: var(--white); }
+    .nav-links a.active::after { width: 100%; }
+    .nav-cta {
+      background: var(--azure); color: white !important;
+      padding: .5rem 1.4rem !important; border-radius: 40px;
+      font-size: .82rem !important; transition: background .2s, transform .2s, box-shadow .2s !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: var(--sky) !important; transform: translateY(-1px) !important; box-shadow: 0 8px 20px rgba(46,125,212,.5) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: none; padding: 4px; }
+    .hamburger span { display: block; width: 26px; height: 2px; background: var(--white); border-radius: 2px; transition: .3s; }
+
+    /* ─── ABOUT HERO ─── */
+    #about-hero {
+      min-height: 70vh; position: relative;
+      display: flex; align-items: flex-end;
+      overflow: hidden; padding-bottom: 5rem;
+    }
+    .ah-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1800&q=80');
+      background-size: cover; background-position: center 35%;
+      transform: scale(1.04); transition: transform 8s ease;
+      filter: saturate(.65) brightness(.5);
+    }
+    #about-hero:hover .ah-bg { transform: scale(1.0); }
+    .ah-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(165deg,
+        rgba(5,9,15,.75) 0%,
+        rgba(10,22,40,.7) 40%,
+        rgba(22,50,86,.55) 70%,
+        rgba(30,90,170,.25) 100%);
+    }
+    .ah-scanlines {
+      position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,.01) 3px, rgba(255,255,255,.01) 4px);
+    }
+    .ah-content {
+      position: relative; z-index: 2;
+      padding: 0 5vw; width: 100%;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      flex-wrap: wrap; gap: 2rem;
+    }
+    .ah-left { max-width: 640px; }
+    .ah-eyebrow {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: rgba(46,125,212,.18); border: 1px solid rgba(109,179,245,.35);
+      color: var(--sky); font-size: .78rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      padding: .45rem 1.1rem; border-radius: 40px; margin-bottom: 1.5rem;
+      backdrop-filter: blur(6px);
+    }
+    .ah-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--sky); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:.4; transform:scale(.7); } }
+    .ah-h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800; letter-spacing: -.04em;
+      color: var(--white); line-height: .95; margin-bottom: 1.2rem;
+    }
+    .ah-h1 em {
+      font-style: normal;
+      background: linear-gradient(100deg, var(--sky), var(--azure), var(--ice));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .ah-sub { color: rgba(255,255,255,.6); font-size: 1rem; line-height: 1.7; max-width: 480px; }
+    .ah-right {
+      display: flex; flex-direction: column; gap: .8rem; align-items: flex-end;
+    }
+    .ah-reg-card {
+      background: rgba(255,255,255,.07); border: 1px solid rgba(109,179,245,.25);
+      backdrop-filter: blur(10px); border-radius: 16px;
+      padding: 1.2rem 1.6rem; text-align: right;
+      transition: background .3s, border-color .3s;
+    }
+    .ah-reg-card:hover { background: rgba(46,125,212,.18); border-color: var(--sky); }
+    .ah-reg-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .12em; color: var(--sky); margin-bottom: .3rem; }
+    .ah-reg-val { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: white; }
+    .ah-reg-sub { font-size: .78rem; color: rgba(255,255,255,.45); margin-top: .1rem; }
+
+    /* bottom strip on hero */
+    .ah-strip {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--azure), var(--sky), transparent);
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { padding: 6rem 5vw; }
+    .section-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      color: var(--azure); font-size: .72rem; font-weight: 600;
+      letter-spacing: .15em; text-transform: uppercase; margin-bottom: .9rem;
+    }
+    .section-tag::before { content: ''; display: block; width: 22px; height: 1.5px; background: var(--azure); }
+    .section-h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; letter-spacing: -.035em;
+      color: var(--deep); line-height: 1.1; margin-bottom: 1rem;
+    }
+    .section-sub { color: #4a6080; font-size: 1rem; line-height: 1.7; max-width: 520px; }
+
+    /* ─── WHO WE ARE ─── */
+    #who { background: var(--white); }
+    .who-grid {
+      display: grid; grid-template-columns: 1.1fr 1fr;
+      gap: 4rem; align-items: center; margin-top: 3.5rem;
+    }
+    .who-visual { position: relative; border-radius: 20px; overflow: hidden; }
+    .who-img {
+      width: 100%; aspect-ratio: 4/5; object-fit: cover;
+      filter: saturate(.7) brightness(.85); transition: filter .4s;
+    }
+    .who-visual:hover .who-img { filter: saturate(.95) brightness(.9); }
+    .who-visual-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(10,22,40,.88) 100%);
+    }
+    .who-tag {
+      position: absolute; bottom: 1.5rem; left: 1.5rem;
+      background: var(--azure); color: white;
+      font-size: .78rem; font-weight: 500; letter-spacing: .06em;
+      padding: .5rem 1.1rem; border-radius: 30px;
+    }
+    .who-corner {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: rgba(5,9,15,.6); backdrop-filter: blur(8px);
+      border: 1px solid rgba(109,179,245,.3); border-radius: 12px;
+      padding: .8rem 1rem; text-align: center;
+      transition: background .3s;
+    }
+    .who-corner:hover { background: rgba(46,125,212,.35); }
+    .who-corner-n { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: white; }
+    .who-corner-l { font-size: .68rem; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .08em; }
+    .who-text-block { }
+    .profile-extract {
+      background: var(--frost); border: 1px solid rgba(30,90,170,.12);
+      border-left: 3px solid var(--azure);
+      border-radius: 0 14px 14px 0; padding: 1.4rem 1.6rem;
+      margin-bottom: 1.5rem; transition: border-left-width .3s, background .3s;
+    }
+    .profile-extract:hover { border-left-width: 5px; background: var(--ice); }
+    .pe-label { font-size: .68rem; text-transform: uppercase; letter-spacing: .12em; color: var(--azure); font-weight: 600; margin-bottom: .5rem; }
+    .pe-text { font-size: .95rem; color: #2a3f58; line-height: 1.7; }
+    .pe-text strong { color: var(--deep); }
+    .address-chips { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.5rem; }
+    .a-chip {
+      background: white; border: 1px solid var(--chrome);
+      border-radius: 30px; padding: .5rem 1.1rem;
+      font-size: .82rem; color: #3a5570;
+      display: flex; align-items: center; gap: .5rem;
+      transition: all .2s;
+    }
+    .a-chip:hover { border-color: var(--azure); background: var(--frost); color: var(--blue); }
+
+    /* ─── MISSION / VISION SPLIT ─── */
+    #mission {
+      background: var(--deep); padding: 0;
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .mv-panel {
+      position: relative; overflow: hidden;
+      min-height: 500px;
+      display: flex; align-items: flex-end; padding: 4rem 5vw;
+    }
+    .mv-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      filter: brightness(.25) saturate(.5); transition: filter .5s;
+    }
+    .mv-panel:hover .mv-bg { filter: brightness(.2) saturate(.4); }
+    .mv-divider { position: absolute; top: 0; right: 0; bottom: 0; width: 1.5px; background: rgba(46,125,212,.25); }
+    .mv-content { position: relative; z-index: 2; }
+    .mv-label {
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--sky); font-weight: 600; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .mv-label::before { content: ''; display: block; width: 16px; height: 1.5px; background: var(--sky); }
+    .mv-h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800; letter-spacing: -.04em;
+      color: white; line-height: 1.1; margin-bottom: 1.2rem;
+    }
+    .mv-p { color: rgba(255,255,255,.6); font-size: .95rem; line-height: 1.75; max-width: 380px; }
+    .mv-line {
+      position: absolute; bottom: 0; left: 0; height: 3px; width: 0;
+      background: linear-gradient(90deg, var(--azure), var(--sky));
+      transition: width .6s ease;
+    }
+    .mv-panel:hover .mv-line { width: 100%; }
+
+    /* ─── VALUES ─── */
+    #values {
+      background: linear-gradient(165deg, var(--frost) 0%, #d9ecff 50%, #c7e3ff 100%);
+    }
+    .values-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem; margin-top: 3rem;
+    }
+    .val-card {
+      background: white; border: 1px solid rgba(30,90,170,.1);
+      border-radius: 16px; padding: 1.8rem 1.5rem;
+      position: relative; overflow: hidden;
+      transition: all .3s cubic-bezier(.22,.88,.32,1); cursor: none;
+    }
+    .val-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(145deg, rgba(46,125,212,.05), rgba(109,179,245,.03));
+      opacity: 0; transition: opacity .3s;
+    }
+    .val-card:hover { transform: translateY(-6px); border-color: var(--azure); box-shadow: 0 20px 40px rgba(30,90,170,.14); }
+    .val-card:hover::before { opacity: 1; }
+    .val-n { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; color: rgba(30,90,170,.06); line-height: 1; position: absolute; top: .5rem; right: 1rem; }
+    .val-icon { font-size: 1.6rem; margin-bottom: 1rem; display: inline-block; transition: transform .3s; }
+    .val-card:hover .val-icon { transform: scale(1.15) rotate(-5deg); }
+    .val-title { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; color: var(--deep); margin-bottom: .5rem; }
+    .val-text { font-size: .83rem; color: #4a6080; line-height: 1.6; }
+    .val-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--azure), var(--sky)); transform: scaleX(0); transform-origin: left; transition: transform .4s; }
+    .val-card:hover .val-bar { transform: scaleX(1); }
+
+    /* ─── PROFILE EXTRACT FULL ─── */
+    #extract { background: var(--white); }
+    .extract-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .ext-card {
+      border: 1px solid var(--chrome); border-radius: 16px;
+      padding: 1.8rem; position: relative; overflow: hidden;
+      transition: all .3s; cursor: none;
+    }
+    .ext-card::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(46,125,212,.04), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .ext-card:hover { border-color: var(--azure); transform: translateY(-4px); box-shadow: 0 16px 32px rgba(30,90,170,.12); }
+    .ext-card:hover::after { opacity: 1; }
+    .ext-pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--frost); border: 1px solid rgba(46,125,212,.2);
+      color: var(--azure); font-size: .68rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .3rem .8rem; border-radius: 30px; margin-bottom: 1rem;
+    }
+    .ext-card p { font-size: .9rem; color: #3a5570; line-height: 1.75; position: relative; z-index: 1; }
+    .ext-card p em { font-style: italic; color: #2a3f58; }
+    .ext-card p strong { color: var(--deep); }
+    .health-block {
+      grid-column: span 2;
+      background: var(--deep); border-radius: 16px;
+      padding: 2rem; display: flex; align-items: center; gap: 1.5rem;
+      transition: background .3s;
+    }
+    .health-block:hover { background: #0e1f3d; }
+    .health-icon {
+      width: 56px; height: 56px; flex-shrink: 0;
+      background: rgba(46,125,212,.25); border: 1px solid rgba(109,179,245,.3);
+      border-radius: 14px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; transition: transform .3s;
+    }
+    .health-block:hover .health-icon { transform: scale(1.1) rotate(-5deg); }
+    .health-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; color: var(--sky); font-weight: 600; margin-bottom: .4rem; }
+    .health-text { color: rgba(255,255,255,.75); font-size: .95rem; line-height: 1.65; }
+    .health-text strong { color: white; }
+
+    /* ─── CONTACT ─── */
+    #contact { background: linear-gradient(165deg, var(--frost) 0%, #d9ecff 60%, #c7e3ff 100%); }
+    .contact-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem; margin-top: 2.5rem;
+    }
+    .contact-line {
+      display: flex; align-items: flex-start; gap: 1.1rem;
+      padding: 1.4rem; background: white;
+      border: 1px solid var(--chrome); border-radius: 14px;
+      transition: all .25s; text-decoration: none; cursor: none;
+    }
+    .contact-line:hover { border-color: var(--azure); background: var(--frost); transform: translateX(5px); box-shadow: 0 8px 20px rgba(30,90,170,.1); }
+    .cl-icon {
+      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--azure), var(--mid));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; transition: transform .25s;
+    }
+    .contact-line:hover .cl-icon { transform: scale(1.08) rotate(-4deg); }
+    .cl-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--azure); font-weight: 600; }
+    .cl-val { font-size: 1rem; color: var(--deep); font-weight: 500; margin-top: .2rem; }
+    .reg-strip { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+    .reg-chip {
+      background: white; border: 1px solid rgba(30,90,170,.15);
+      color: #3a5570; font-size: .78rem;
+      padding: .45rem 1rem; border-radius: 30px; transition: all .2s;
+    }
+    .reg-chip:hover { background: var(--ice); border-color: var(--azure); color: var(--blue); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink); padding: 3rem 5vw 2rem;
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 2rem; padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: white; letter-spacing: -.04em; }
+    .footer-logo span { color: var(--sky); }
+    .footer-tagline { color: var(--silver); font-size: .85rem; margin-top: .4rem; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-links a { color: var(--silver); text-decoration: none; font-size: .85rem; transition: color .2s; }
+    .footer-links a:hover { color: var(--sky); }
+    .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 1.8rem; font-size: .78rem; color: rgba(255,255,255,.25); }
+    .footer-dots { display: flex; align-items: center; gap: .5rem; }
+    .footer-dots span { width: 5px; height: 5px; border-radius: 50%; background: var(--azure); }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── NOISE ─── */
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9990;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: .022;
+    }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; position: fixed; inset: 68px 0 0 0; background: rgba(5,9,15,.97); align-items: center; justify-content: center; gap: 2rem; z-index: 99; }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1.1rem; }
+      .hamburger { display: flex; }
+      .who-grid { grid-template-columns: 1fr; }
+      .who-visual { aspect-ratio: 16/9; }
+      .who-img { aspect-ratio: 16/9; }
+      #mission { grid-template-columns: 1fr; }
+      .mv-divider { display: none; }
+      .mv-panel { min-height: 380px; }
+      .extract-grid { grid-template-columns: 1fr; }
+      .health-block { grid-column: span 1; }
+      .ah-right { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="index.html" class="nav-logo">Boemo<span>kao</span></a>
+  <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+
+    <a href="services.html">Services</a>
+    <a href="#" class="active">About</a>
+    <a href="contact.html" class="nav-cta">Contact us</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ═══ ABOUT HERO ═══ -->
+<section id="about-hero">
+  <div class="ah-bg"></div>
+  <div class="ah-overlay"></div>
+  <div class="ah-scanlines"></div>
+  <div class="ah-strip"></div>
+  <div class="ah-content reveal">
+    <div class="ah-left">
+      <div class="ah-eyebrow">Est. 11 July 2024 &nbsp;·&nbsp; Kathu, Northern Cape</div>
+      <h1 class="ah-h1">The team<br>behind every<br><em>clean space.</em></h1>
+      <p class="ah-sub">A proudly South African cleaning company rooted in Dibeng, Northern Cape — built on expertise, driven by honesty, and committed to every client's environment.</p>
+    </div>
+    <div class="ah-right">
+      <div class="ah-reg-card">
+        <div class="ah-reg-label">Registration no.</div>
+        <div class="ah-reg-val">K2024406588</div>
+        <div class="ah-reg-sub">Incorporated 11 July 2024</div>
+      </div>
+      <div class="ah-reg-card">
+        <div class="ah-reg-label">Location</div>
+        <div class="ah-reg-val">Kathu 8463</div>
+        <div class="ah-reg-sub">Dibeng · Northern Cape · SA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHO WE ARE ═══ -->
+<section id="who">
+  <div class="section-tag reveal">Our story</div>
+  <h2 class="section-h2 reveal">Who we are</h2>
+  <div class="who-grid">
+    <div class="who-visual reveal">
+      <img class="who-img" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&q=80" alt="Professional team">
+      <div class="who-visual-overlay"></div>
+      <div class="who-tag">House 2842, Deben, Kathu 8463</div>
+      <div class="who-corner">
+        <div class="who-corner-n">2024</div>
+        <div class="who-corner-l">Founded</div>
+      </div>
+    </div>
+    <div class="who-text-block reveal">
+      <div class="profile-extract">
+        <div class="pe-label">Company profile · page 1</div>
+        <p class="pe-text"><strong>Boemokao Cleaning Services</strong> is a South African company, registered as <strong>K2024406588</strong>, with address House No.2842, Deben, Dibeng, Northern Cape 8463. The company was incorporated on <strong>July 11, 2024</strong>.</p>
+      </div>
+      <div class="profile-extract">
+        <div class="pe-label">Our commitment</div>
+        <p class="pe-text">From day one, our focus has been simple: deliver cleaning services that go beyond the brief. We don't just clean — we protect environments, support health and safety, and build lasting client relationships rooted in transparency.</p>
+      </div>
+      <div class="address-chips">
+        <span class="a-chip">🏠 House 2842, Deben</span>
+        <span class="a-chip">📌 Kathu 8463</span>
+        <span class="a-chip">🇿🇦 Northern Cape · South Africa</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MISSION / VISION ═══ -->
+<div id="mission">
+  <div class="mv-panel">
+    <div class="mv-bg" style="background-image:url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=900&q=75')"></div>
+    <div class="mv-divider"></div>
+    <div class="mv-content">
+      <div class="mv-label">Our Mission</div>
+      <h3 class="mv-h3">People first,<br>always.</h3>
+      <p class="mv-p">Provide our customers a level of service unequaled in the cleaning industry by developing an organisation that encourages all people to prosper, grow to their full potential, and protect the health and safety of every individual.</p>
+    </div>
+    <div class="mv-line"></div>
+  </div>
+  <div class="mv-panel">
+    <div class="mv-bg" style="background-image:url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&q=75')"></div>
+    <div class="mv-content">
+      <div class="mv-label">Our Vision</div>
+      <h3 class="mv-h3">The leading choice<br>in the industry.</h3>
+      <p class="mv-p">We strive to become the leading cleaning service provider in the industry, the supplier of choice for all our clients — offering true value for money across every service we deliver.</p>
+    </div>
+    <div class="mv-line"></div>
+  </div>
+</div>
+
+<!-- ═══ VALUES ═══ -->
+<section id="values">
+  <div class="section-tag reveal">Why Boemokao</div>
+  <h2 class="section-h2 reveal">Five commitments<br>we live by</h2>
+  <p class="section-sub reveal">As stated in our company profile — these values are the foundation of everything we do.</p>
+  <div class="values-grid">
+    <div class="val-card reveal">
+      <span class="val-n">01</span>
+      <div class="val-icon">🎯</div>
+      <div class="val-title">High-quality with expertise</div>
+      <div class="val-text">Deliver high-quality cleaning services with trained professionals and industry-leading methods.</div>
+      <div class="val-bar"></div>
+    </div>
+    <div class="val-card reveal">
+      <span class="val-n">02</span>
+      <div class="val-icon">🤝</div>
+      <div class="val-title">Honesty & transparency</div>
+      <div class="val-text">Operate with honesty and transparency in every interaction, every quote, every job.</div>
+      <div class="val-bar"></div>
+    </div>
+    <div class="val-card reveal">
+      <span class="val-n">03</span>
+      <div class="val-icon">⚙️</div>
+      <div class="val-title">Consistent & independent</div>
+      <div class="val-text">Providing consistent and independent services you can rely on, every single time.</div>
+      <div class="val-bar"></div>
+    </div>
+    <div class="val-card reveal">
+      <span class="val-n">04</span>
+      <div class="val-icon">🔬</div>
+      <div class="val-title">New technologies & methods</div>
+      <div class="val-text">Embracing new cleaning technologies and methods to stay ahead and deliver better results.</div>
+      <div class="val-bar"></div>
+    </div>
+    <div class="val-card reveal">
+      <span class="val-n">05</span>
+      <div class="val-icon">⭐</div>
+      <div class="val-title">Exceeding expectations</div>
+      <div class="val-text">Meeting client needs and consistently exceeding expectations — the brief is just the starting point.</div>
+      <div class="val-bar"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROFILE EXTRACTS ═══ -->
+<section id="extract">
+  <div class="section-tag reveal">By the book</div>
+  <h2 class="section-h2 reveal">Straight from our<br>company profile</h2>
+  <div class="extract-grid">
+    <div class="ext-card reveal">
+      <div class="ext-pill">📄 Page 1 · Company info</div>
+      <p><strong>Boemokao Cleaning Services</strong> is a South African Company, registered as K2024406588 with address House no.2842, Deben, Dibeng Northern Cape 8463. The company was incorporated on <strong>July 11 2024</strong>.</p>
+    </div>
+    <div class="ext-card reveal">
+      <div class="ext-pill">📄 Page 2 · Values</div>
+      <p><em>"Deliver high-quality cleaning services with expertise, operate with honesty and transparency, providing consistent and independent services … embracing new technologies and methods. Meet clients' needs and exceed expectations."</em></p>
+    </div>
+    <div class="health-block reveal">
+      <div class="health-icon">🛡️</div>
+      <div>
+        <div class="health-label">Health & safety promise · Mission statement</div>
+        <p class="health-text">"Protect the health and safety of all our people" — <strong>this is core to our mission</strong> and guides every service we deliver, from routine office cleans to complex healthcare environments.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="section-tag reveal">Get in touch</div>
+  <h2 class="section-h2 reveal">Reach out to us</h2>
+  <p class="section-sub reveal">Based in Kathu, Northern Cape — ready to service your facility.</p>
+  <div class="contact-grid">
+    <a href="tel:0731907149" class="contact-line reveal">
+      <div class="cl-icon">📞</div>
+      <div>
+        <div class="cl-label">Cell · Primary</div>
+        <div class="cl-val">073 190 7149</div>
+      </div>
+    </a>
+    <a href="tel:0687436875" class="contact-line reveal">
+      <div class="cl-icon">📱</div>
+      <div>
+        <div class="cl-label">Cell · Secondary</div>
+        <div class="cl-val">068 743 6875</div>
+      </div>
+    </a>
+    <a href="mailto:Igmolaodi@gmail.com" class="contact-line reveal">
+      <div class="cl-icon">✉️</div>
+      <div>
+        <div class="cl-label">Email</div>
+        <div class="cl-val">Igmolaodi@gmail.com</div>
+      </div>
+    </a>
+    <div class="contact-line reveal">
+      <div class="cl-icon">📍</div>
+      <div>
+        <div class="cl-label">Physical address</div>
+        <div class="cl-val">House 2842, Deben, Kathu 8463</div>
+      </div>
+    </div>
+  </div>
+  <div class="reg-strip">
+    <span class="reg-chip">🔖 Reg: K2024406588</span>
+    <span class="reg-chip">📌 Inc. 11 July 2024</span>
+    <span class="reg-chip">🧾 Dibeng, NC 8463</span>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Boemo<span>kao</span> <span style="font-size:.75rem; color:var(--silver); font-weight:400;">(PTY) LTD</span></div>
+      <div class="footer-tagline">Precision & integrity in every corner.</div>
+    </div>
+    <div class="footer-links">
+      <a href="services.html">Services</a>
+      <a href="#">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Boemokao Cleaning Services (PTY) LTD — all rights reserved</span>
+    <div class="footer-dots"><span></span><span></span><span style="color:var(--silver); font-size:.75rem;">quality &amp; trust</span></div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cur = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
+  let rx=0, ry=0, mx=0, my=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function anim(){ cur.style.left=mx+'px'; cur.style.top=my+'px'; rx+=(mx-rx)*.14; ry+=(my-ry)*.14; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(anim); })();
+
+  // Hamburger
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  setTimeout(() => document.querySelectorAll('#about-hero .reveal').forEach(el => el.classList.add('visible')), 200);
+</script>
+</body>
+</html>

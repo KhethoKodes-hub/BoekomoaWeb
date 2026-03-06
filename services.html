@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Boemokao · Our Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink:    #05090f;
+      --deep:   #0a1628;
+      --mid:    #163256;
+      --blue:   #1e5aaa;
+      --azure:  #2e7dd4;
+      --sky:    #6db3f5;
+      --ice:    #d6eaff;
+      --frost:  #eef5ff;
+      --white:  #ffffff;
+      --chrome: #e8ecf2;
+      --silver: #b0bcc8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--frost); color: var(--ink); overflow-x: hidden; cursor: none; }
+
+    /* ─── CURSOR ─── */
+    #cursor { width:12px; height:12px; border-radius:50%; background:var(--azure); position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .18s,height .18s,background .18s; }
+    #cursor-ring { width:36px; height:36px; border-radius:50%; border:1.5px solid var(--azure); position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .4s,height .4s,border-color .3s; opacity:.55; }
+    body:has(a:hover) #cursor { width:18px; height:18px; background:var(--sky); }
+    body:has(a:hover) #cursor-ring { width:54px; height:54px; border-color:var(--sky); }
+
+    /* ─── NAV ─── */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:0 5vw; height:68px; background:rgba(5,9,15,.82); backdrop-filter:blur(18px) saturate(160%); border-bottom:1px solid rgba(46,125,212,.18); }
+    .nav-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.25rem; color:var(--white); letter-spacing:-.04em; text-decoration:none; }
+    .nav-logo span { color:var(--sky); }
+    .nav-links { display:flex; gap:2rem; }
+    .nav-links a { font-size:.85rem; font-weight:500; color:var(--silver); text-decoration:none; letter-spacing:.04em; text-transform:uppercase; position:relative; transition:color .2s; }
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1.5px; background:var(--sky); transition:width .3s ease; }
+    .nav-links a:hover, .nav-links a.active { color:var(--white); }
+    .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+    .nav-cta { background:var(--azure); color:white !important; padding:.5rem 1.4rem !important; border-radius:40px; font-size:.82rem !important; transition:background .2s,transform .2s,box-shadow .2s !important; }
+    .nav-cta::after { display:none !important; }
+    .nav-cta:hover { background:var(--sky) !important; transform:translateY(-1px) !important; box-shadow:0 8px 20px rgba(46,125,212,.5) !important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:none; padding:4px; }
+    .hamburger span { display:block; width:26px; height:2px; background:var(--white); border-radius:2px; transition:.3s; }
+
+    /* ─── SERVICES HERO ─── */
+    #svc-hero { min-height:68vh; position:relative; display:flex; align-items:flex-end; overflow:hidden; padding-bottom:5rem; }
+    .sh-bg { position:absolute; inset:0; background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800&q=80'); background-size:cover; background-position:center 40%; transform:scale(1.04); transition:transform 8s ease; filter:saturate(.6) brightness(.45); }
+    #svc-hero:hover .sh-bg { transform:scale(1.0); }
+    .sh-overlay { position:absolute; inset:0; background:linear-gradient(160deg, rgba(5,9,15,.8) 0%, rgba(10,22,40,.72) 40%, rgba(22,50,86,.5) 70%, rgba(30,90,170,.22) 100%); }
+    .sh-scanlines { position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.01) 3px,rgba(255,255,255,.01) 4px); }
+    .sh-strip { position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--azure),var(--sky),transparent); }
+    .sh-content { position:relative; z-index:2; padding:0 5vw; width:100%; display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:2rem; }
+    .sh-left { max-width:600px; }
+    .sh-eyebrow { display:inline-flex; align-items:center; gap:.6rem; background:rgba(46,125,212,.18); border:1px solid rgba(109,179,245,.35); color:var(--sky); font-size:.78rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; padding:.45rem 1.1rem; border-radius:40px; margin-bottom:1.5rem; backdrop-filter:blur(6px); }
+    .sh-eyebrow::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--sky); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(.7);} }
+    .sh-h1 { font-family:'Syne',sans-serif; font-size:clamp(2.8rem,6vw,5rem); font-weight:800; letter-spacing:-.04em; color:var(--white); line-height:.95; margin-bottom:1.2rem; }
+    .sh-h1 em { font-style:normal; background:linear-gradient(100deg,var(--sky),var(--azure),var(--ice)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+    .sh-sub { color:rgba(255,255,255,.6); font-size:1rem; line-height:1.7; max-width:460px; }
+    .sh-count-row { display:flex; gap:1.5rem; flex-wrap:wrap; }
+    .sh-count { background:rgba(255,255,255,.07); border:1px solid rgba(109,179,245,.25); backdrop-filter:blur(10px); border-radius:14px; padding:1rem 1.4rem; text-align:center; transition:background .3s,border-color .3s; }
+    .sh-count:hover { background:rgba(46,125,212,.2); border-color:var(--sky); }
+    .sh-count-n { font-family:'Syne',sans-serif; font-weight:800; font-size:1.5rem; color:white; }
+    .sh-count-l { font-size:.68rem; color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.1em; margin-top:.15rem; }
+
+    /* ─── SECTION BASE ─── */
+    section { padding:6rem 5vw; }
+    .section-tag { display:inline-flex; align-items:center; gap:.5rem; color:var(--azure); font-size:.72rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; margin-bottom:.9rem; }
+    .section-tag::before { content:''; display:block; width:22px; height:1.5px; background:var(--azure); }
+    .section-h2 { font-family:'Syne',sans-serif; font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.035em; color:var(--deep); line-height:1.1; margin-bottom:1rem; }
+    .section-sub { color:#4a6080; font-size:1rem; line-height:1.7; max-width:520px; }
+
+    /* ─── SERVICE CARDS GRID ─── */
+    #services { background:var(--white); }
+    .svc-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5px; margin-top:3.5rem; border:1.5px solid var(--chrome); border-radius:24px; overflow:hidden; }
+    .svc-card { position:relative; overflow:hidden; min-height:380px; display:flex; flex-direction:column; justify-content:flex-end; padding:2.2rem; cursor:none; }
+    .svc-bg { position:absolute; inset:0; background-size:cover; background-position:center; transition:transform .6s cubic-bezier(.22,.88,.32,1),filter .4s; filter:saturate(.7) brightness(.5); }
+    .svc-card:hover .svc-bg { transform:scale(1.08); filter:saturate(.9) brightness(.32); }
+    .svc-overlay { position:absolute; inset:0; background:linear-gradient(180deg,transparent 25%,rgba(5,9,15,.94) 100%); }
+    .svc-card:hover .svc-overlay { background:linear-gradient(180deg,rgba(10,22,40,.05) 0%,rgba(10,22,40,.97) 100%); }
+    .svc-accent { position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--azure),var(--sky)); transform:scaleX(0); transform-origin:left; transition:transform .4s ease; }
+    .svc-card:hover .svc-accent { transform:scaleX(1); }
+    .svc-num { position:absolute; top:1.5rem; right:1.8rem; font-family:'Syne',sans-serif; font-size:4rem; font-weight:800; color:rgba(255,255,255,.04); line-height:1; z-index:1; transition:color .3s; }
+    .svc-card:hover .svc-num { color:rgba(46,125,212,.1); }
+    .svc-icon { position:relative; z-index:2; width:50px; height:50px; border:1.5px solid rgba(109,179,245,.35); border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; background:rgba(5,9,15,.5); backdrop-filter:blur(4px); margin-bottom:1rem; transition:background .3s,border-color .3s,transform .3s; }
+    .svc-card:hover .svc-icon { background:rgba(46,125,212,.35); border-color:var(--sky); transform:translateY(-4px); }
+    .svc-title { position:relative; z-index:2; font-family:'Syne',sans-serif; font-size:1.15rem; font-weight:700; letter-spacing:-.02em; color:white; margin-bottom:.5rem; }
+    .svc-desc { position:relative; z-index:2; color:rgba(255,255,255,.55); font-size:.87rem; line-height:1.65; max-height:0; overflow:hidden; transition:max-height .5s ease,opacity .4s; opacity:0; }
+    .svc-card:hover .svc-desc { max-height:90px; opacity:1; }
+    .svc-tags { position:relative; z-index:2; display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.8rem; }
+    .svc-tag { background:rgba(255,255,255,.08); border:1px solid rgba(109,179,245,.2); color:rgba(255,255,255,.6); font-size:.7rem; padding:.25rem .7rem; border-radius:20px; transition:background .2s,color .2s; }
+    .svc-card:hover .svc-tag { background:rgba(46,125,212,.25); border-color:rgba(109,179,245,.4); color:rgba(255,255,255,.85); }
+    .svc-arrow { position:relative; z-index:2; display:inline-flex; align-items:center; gap:.4rem; color:var(--sky); font-size:.8rem; font-weight:500; margin-top:1rem; opacity:0; transform:translateX(-8px); transition:opacity .3s .1s,transform .3s .1s; }
+    .svc-card:hover .svc-arrow { opacity:1; transform:translateX(0); }
+    /* wide card spans both columns */
+    .svc-card.wide { grid-column:span 2; min-height:300px; }
+    .svc-card.wide .svc-desc { max-height:0; }
+    .svc-card.wide:hover .svc-desc { max-height:80px; }
+
+    /* ─── PROFILE VERBATIM BAND ─── */
+    #verbatim { background:var(--deep); padding:5rem 5vw; }
+    .verbatim-inner { max-width:780px; margin:0 auto; text-align:center; }
+    .verbatim-label { font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; color:var(--sky); font-weight:600; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:.6rem; }
+    .verbatim-label::before, .verbatim-label::after { content:''; display:block; width:30px; height:1.5px; background:var(--azure); }
+    .verbatim-quote { font-family:'Syne',sans-serif; font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:600; color:white; line-height:1.5; letter-spacing:-.02em; }
+    .verbatim-quote em { font-style:normal; color:var(--sky); }
+    .verbatim-source { margin-top:1.5rem; font-size:.78rem; color:rgba(255,255,255,.3); letter-spacing:.08em; }
+    .verbatim-line { width:60px; height:2px; background:linear-gradient(90deg,var(--azure),var(--sky)); margin:1.5rem auto 0; }
+
+    /* ─── VALUES + WHY ─── */
+    #why { background:linear-gradient(165deg,var(--frost) 0%,#d9ecff 50%,#c7e3ff 100%); }
+    .why-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-top:3rem; }
+    .why-card { background:white; border:1px solid rgba(30,90,170,.1); border-radius:18px; padding:2rem; position:relative; overflow:hidden; transition:all .3s cubic-bezier(.22,.88,.32,1); cursor:none; }
+    .why-card::before { content:''; position:absolute; inset:0; background:linear-gradient(145deg,rgba(46,125,212,.05),rgba(109,179,245,.03)); opacity:0; transition:opacity .3s; }
+    .why-card:hover { transform:translateY(-5px); border-color:var(--azure); box-shadow:0 20px 40px rgba(30,90,170,.14); }
+    .why-card:hover::before { opacity:1; }
+    .why-card-icon { font-size:1.8rem; margin-bottom:1rem; display:inline-block; transition:transform .3s; }
+    .why-card:hover .why-card-icon { transform:scale(1.12) rotate(-5deg); }
+    .why-card-title { font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:700; color:var(--deep); margin-bottom:.6rem; }
+    .why-card-text { font-size:.88rem; color:#4a6080; line-height:1.7; }
+    .why-card-bar { position:absolute; bottom:0; left:0; right:0; height:2.5px; background:linear-gradient(90deg,var(--azure),var(--sky)); transform:scaleX(0); transform-origin:left; transition:transform .4s; }
+    .why-card:hover .why-card-bar { transform:scaleX(1); }
+    .val-list { margin-top:1rem; display:flex; flex-direction:column; gap:.6rem; }
+    .val-item { display:flex; align-items:center; gap:.7rem; font-size:.88rem; color:#3a5570; padding:.5rem .8rem; border-radius:8px; border:1px solid transparent; transition:all .2s; }
+    .val-item:hover { background:var(--frost); border-color:rgba(46,125,212,.2); color:var(--deep); }
+    .val-dot { width:6px; height:6px; border-radius:50%; background:var(--azure); flex-shrink:0; }
+
+    /* ─── CONTACT ─── */
+    #contact { background:var(--white); }
+    .contact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; margin-top:2.5rem; }
+    .contact-line { display:flex; align-items:flex-start; gap:1.1rem; padding:1.4rem; background:var(--frost); border:1px solid var(--chrome); border-radius:14px; transition:all .25s; text-decoration:none; cursor:none; }
+    .contact-line:hover { border-color:var(--azure); background:var(--ice); transform:translateX(5px); box-shadow:0 8px 20px rgba(30,90,170,.1); }
+    .cl-icon { width:44px; height:44px; border-radius:10px; flex-shrink:0; background:linear-gradient(135deg,var(--azure),var(--mid)); display:flex; align-items:center; justify-content:center; font-size:1.1rem; transition:transform .25s; }
+    .contact-line:hover .cl-icon { transform:scale(1.08) rotate(-4deg); }
+    .cl-label { font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; color:var(--azure); font-weight:600; }
+    .cl-val { font-size:1rem; color:var(--deep); font-weight:500; margin-top:.2rem; }
+    .reg-strip { display:flex; flex-wrap:wrap; gap:.8rem; margin-top:2rem; }
+    .reg-chip { background:var(--frost); border:1px solid rgba(30,90,170,.15); color:#3a5570; font-size:.78rem; padding:.45rem 1rem; border-radius:30px; transition:all .2s; }
+    .reg-chip:hover { background:var(--ice); border-color:var(--azure); color:var(--blue); }
+
+    /* ─── FOOTER ─── */
+    footer { background:var(--ink); padding:3rem 5vw 2rem; border-top:1px solid rgba(255,255,255,.05); }
+    .footer-top { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:2rem; padding-bottom:2rem; border-bottom:1px solid rgba(255,255,255,.06); }
+    .footer-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; color:white; letter-spacing:-.04em; }
+    .footer-logo span { color:var(--sky); }
+    .footer-tagline { color:var(--silver); font-size:.85rem; margin-top:.4rem; }
+    .footer-links { display:flex; flex-wrap:wrap; gap:1.5rem; }
+    .footer-links a { color:var(--silver); text-decoration:none; font-size:.85rem; transition:color .2s; }
+    .footer-links a:hover { color:var(--sky); }
+    .footer-bottom { display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; padding-top:1.8rem; font-size:.78rem; color:rgba(255,255,255,.25); }
+    .footer-dots { display:flex; align-items:center; gap:.5rem; }
+    .footer-dots span { width:5px; height:5px; border-radius:50%; background:var(--azure); }
+
+    /* ─── REVEAL ─── */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .65s ease,transform .65s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ─── NOISE ─── */
+    body::after { content:''; position:fixed; inset:0; pointer-events:none; z-index:9990; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity:.022; }
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 768px) {
+      .nav-links { display:none; flex-direction:column; position:fixed; inset:68px 0 0 0; background:rgba(5,9,15,.97); align-items:center; justify-content:center; gap:2rem; z-index:99; }
+      .nav-links.open { display:flex; }
+      .nav-links a { font-size:1.1rem; }
+      .hamburger { display:flex; }
+      .svc-grid { grid-template-columns:1fr; border-radius:16px; }
+      .svc-card.wide { grid-column:span 1; }
+      .why-grid { grid-template-columns:1fr; }
+      .sh-count-row { justify-content:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <a href="boemokao.html" class="nav-logo">Boemo<span>kao</span></a>
+  <div class="nav-links" id="navLinks">
+        <a href="index.html" >Home</a>
+
+    <a href="services.html" class="active">Services</a>
+    <a href="about.html">About</a>
+    <a href="contact.html" class="nav-cta">Contact us</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ═══ SERVICES HERO ═══ -->
+<section id="svc-hero">
+  <div class="sh-bg"></div>
+  <div class="sh-overlay"></div>
+  <div class="sh-scanlines"></div>
+  <div class="sh-strip"></div>
+  <div class="sh-content reveal">
+    <div class="sh-left">
+      <div class="sh-eyebrow">Professional cleaning solutions · Northern Cape</div>
+      <h1 class="sh-h1">Every space,<br>every sector.<br><em>Handled.</em></h1>
+      <p class="sh-sub">Five specialist cleaning services built on expertise, delivered with transparency — exactly as described in our company profile.</p>
+    </div>
+    <div class="sh-count-row">
+      <div class="sh-count">
+        <div class="sh-count-n">5</div>
+        <div class="sh-count-l">Services</div>
+      </div>
+      <div class="sh-count">
+        <div class="sh-count-n">NC</div>
+        <div class="sh-count-l">Based in</div>
+      </div>
+      <div class="sh-count">
+        <div class="sh-count-n">2024</div>
+        <div class="sh-count-l">Est.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICE CARDS ═══ -->
+<section id="services">
+  <div class="section-tag reveal">What we offer</div>
+  <h2 class="section-h2 reveal">Our full service range</h2>
+  <p class="section-sub reveal">A complete portfolio of professional cleaning solutions — from corporate offices to industrial facilities.</p>
+
+  <div class="svc-grid reveal">
+
+    <!-- 01 Office & commercial -->
+    <div class="svc-card">
+      <div class="svc-accent"></div>
+      <div class="svc-bg" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&q=75')"></div>
+      <div class="svc-overlay"></div>
+      <span class="svc-num">01</span>
+      <div class="svc-icon">🏢</div>
+      <div class="svc-title">Office & Commercial Cleaning</div>
+      <div class="svc-desc">Daily or scheduled cleaning for workspaces, retail and commercial premises — keeping your environment spotless and professional at all times.</div>
+      <div class="svc-tags">
+        <span class="svc-tag">office</span>
+        <span class="svc-tag">retail</span>
+        <span class="svc-tag">scheduled</span>
+      </div>
+      <span class="svc-arrow">Get a quote →</span>
+    </div>
+
+    <!-- 02 Industrial & warehouse -->
+    <div class="svc-card">
+      <div class="svc-accent"></div>
+      <div class="svc-bg" style="background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=900&q=75')"></div>
+      <div class="svc-overlay"></div>
+      <span class="svc-num">02</span>
+      <div class="svc-icon">🏭</div>
+      <div class="svc-title">Industrial & Warehouse Cleaning</div>
+      <div class="svc-desc">Heavy-duty cleaning for factories, distribution centres and warehouses. Safety-first approach with specialised equipment and thoroughness guaranteed.</div>
+      <div class="svc-tags">
+        <span class="svc-tag">factory</span>
+        <span class="svc-tag">warehouse</span>
+        <span class="svc-tag">heavy-duty</span>
+      </div>
+      <span class="svc-arrow">Get a quote →</span>
+    </div>
+
+    <!-- 03 Healthcare -->
+    <div class="svc-card">
+      <div class="svc-accent"></div>
+      <div class="svc-bg" style="background-image:url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=900&q=75')"></div>
+      <div class="svc-overlay"></div>
+      <span class="svc-num">03</span>
+      <div class="svc-icon">🏥</div>
+      <div class="svc-title">Healthcare & Hospital Cleaning</div>
+      <div class="svc-desc">Specialised disinfection, infection control and sterile environment protocols — protecting patients, staff and visitors in all medical facilities.</div>
+      <div class="svc-tags">
+        <span class="svc-tag">hospitals</span>
+        <span class="svc-tag">clinics</span>
+        <span class="svc-tag">sterile</span>
+      </div>
+      <span class="svc-arrow">Get a quote →</span>
+    </div>
+
+    <!-- 04 Deep cleaning -->
+    <div class="svc-card">
+      <div class="svc-accent"></div>
+      <div class="svc-bg" style="background-image:url('https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=900&q=75')"></div>
+      <div class="svc-overlay"></div>
+      <span class="svc-num">04</span>
+      <div class="svc-icon">🧽</div>
+      <div class="svc-title">Deep Cleaning, Carpets & Sanitisation</div>
+      <div class="svc-desc">Intensive deep cleans, steam carpet treatments and full-facility sanitisation — for post-construction, seasonal or specialist hygiene requirements.</div>
+      <div class="svc-tags">
+        <span class="svc-tag">steam</span>
+        <span class="svc-tag">carpets</span>
+        <span class="svc-tag">sanitisation</span>
+      </div>
+      <span class="svc-arrow">Get a quote →</span>
+    </div>
+
+    <!-- 05 Pest control – wide -->
+    <div class="svc-card wide">
+      <div class="svc-accent"></div>
+      <div class="svc-bg" style="background-image:url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1400&q=75'); background-position:center 30%;"></div>
+      <div class="svc-overlay"></div>
+      <span class="svc-num">05</span>
+      <div class="svc-icon">🦟</div>
+      <div class="svc-title">Specialised Pest Control & Hygiene Solutions</div>
+      <div class="svc-desc">Integrated pest management paired with comprehensive hygiene packages — a clean, safe and healthy environment guaranteed across commercial and industrial settings.</div>
+      <div class="svc-tags">
+        <span class="svc-tag">pest control</span>
+        <span class="svc-tag">hygiene solutions</span>
+        <span class="svc-tag">commercial</span>
+        <span class="svc-tag">industrial</span>
+      </div>
+      <span class="svc-arrow">Get a quote →</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ VERBATIM QUOTE BAND ═══ -->
+<div id="verbatim">
+  <div class="verbatim-inner reveal">
+    <div class="verbatim-label">Company profile · exact wording</div>
+    <p class="verbatim-quote">
+      "As a Cleaning Service provider, Boemokao offers a range of services which include:
+      <em>Office and commercial cleaning · Industrial and warehouse cleaning · Healthcare and hospital cleaning ·
+      Deep cleaning, Carpet cleaning and Sanitisation · Specialised Cleaning services like pest control and hygiene Solutions.</em>"
+    </p>
+    <div class="verbatim-source">— Boemokao Cleaning Services Company Profile, pages 1–2</div>
+    <div class="verbatim-line"></div>
+  </div>
+</div>
+
+<!-- ═══ VALUES + WHY ═══ -->
+<section id="why">
+  <div class="section-tag reveal">Why Boemokao</div>
+  <h2 class="section-h2 reveal">Services delivered<br>with integrity</h2>
+  <div class="why-grid">
+
+    <div class="why-card reveal">
+      <div class="why-card-icon">🎯</div>
+      <div class="why-card-title">Delivered with our values</div>
+      <div class="val-list">
+        <div class="val-item"><span class="val-dot"></span>High-quality services with expertise</div>
+        <div class="val-item"><span class="val-dot"></span>Honesty & full transparency</div>
+        <div class="val-item"><span class="val-dot"></span>Consistent & independent delivery</div>
+        <div class="val-item"><span class="val-dot"></span>Embracing new technologies & methods</div>
+        <div class="val-item"><span class="val-dot"></span>Exceeding client expectations</div>
+      </div>
+      <div class="why-card-bar"></div>
+    </div>
+
+    <div class="why-card reveal">
+      <div class="why-card-icon">🔮</div>
+      <div class="why-card-title">Why choose Boemokao?</div>
+      <div class="why-card-text">We don't just clean — we protect health and safety. Every service is backed by our mission to develop an organisation where all people prosper, and our vision to be the supplier of choice offering true value for money.</div>
+      <br>
+      <div class="why-card-text" style="color:var(--azure); font-weight:500; font-size:.8rem; margin-top:.5rem;">📄 Company profile, pages 2–3</div>
+      <div class="why-card-bar"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="section-tag reveal">Book a service</div>
+  <h2 class="section-h2 reveal">Contact us today</h2>
+  <p class="section-sub reveal">Ready to get started? Reach out and we'll tailor a cleaning solution for your facility.</p>
+  <div class="contact-grid">
+    <a href="tel:0731907149" class="contact-line reveal">
+      <div class="cl-icon">📞</div>
+      <div><div class="cl-label">Cell · Primary</div><div class="cl-val">073 190 7149</div></div>
+    </a>
+    <a href="tel:0687436875" class="contact-line reveal">
+      <div class="cl-icon">📱</div>
+      <div><div class="cl-label">Cell · Secondary</div><div class="cl-val">068 743 6875</div></div>
+    </a>
+    <a href="mailto:Igmolaodi@gmail.com" class="contact-line reveal">
+      <div class="cl-icon">✉️</div>
+      <div><div class="cl-label">Email</div><div class="cl-val">Igmolaodi@gmail.com</div></div>
+    </a>
+    <div class="contact-line reveal">
+      <div class="cl-icon">📍</div>
+      <div><div class="cl-label">Address</div><div class="cl-val">House 2842, Deben, Kathu 8463</div></div>
+    </div>
+  </div>
+  <div class="reg-strip">
+    <span class="reg-chip">🔖 Reg: K2024406588</span>
+    <span class="reg-chip">📌 Inc. 11 July 2024</span>
+    <span class="reg-chip">🧾 Dibeng, NC 8463</span>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Boemo<span>kao</span> <span style="font-size:.75rem; color:var(--silver); font-weight:400;">(PTY) LTD</span></div>
+      <div class="footer-tagline">Precision & integrity in every corner.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="boemokao-about.html">About</a>
+      <a href="#why">Values</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Boemokao Cleaning Services (PTY) LTD — all rights reserved</span>
+    <div class="footer-dots"><span></span><span></span><span style="color:var(--silver); font-size:.75rem;">quality &amp; trust</span></div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cur = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
+  let rx=0, ry=0, mx=0, my=0;
+  document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+  (function anim(){ cur.style.left=mx+'px'; cur.style.top=my+'px'; rx+=(mx-rx)*.14; ry+=(my-ry)*.14; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(anim); })();
+
+  // Hamburger
+  document.getElementById('hamburger').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+
+  // Scroll reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  setTimeout(() => document.querySelectorAll('#svc-hero .reveal').forEach(el => el.classList.add('visible')), 200);
+</script>
+</body>
+</html>
